@@ -4,10 +4,8 @@ import dao.ConexionBBDD;
 import modelo.Hilo;
 
 import java.util.Scanner;
-import java.util.concurrent.Semaphore;
 
 public class Menu {
-    Semaphore semaphore = new Semaphore(1);
     ConexionBBDD conexionBBDD = new ConexionBBDD();
     Scanner scanner = new Scanner(System.in);
     SumaSecuencial sumaSecuencial = new SumaSecuencial();
@@ -46,17 +44,18 @@ public class Menu {
                                 }else{
                                     finHilo = fin * (i+1+resto);
                                 }
-                                semaphore.acquire();
+
                                 Hilo hilo = new Hilo(principioHilo, finHilo);
-                                semaphore.release();
-                                sumaTotal += hilo.leerYsumarIngresos();
+                                hilo.start();
+                                hilo.join();
+                                sumaTotal += hilo.getSumaTotal();
                             }
 
                             long fin = System.currentTimeMillis();
                             double tiempo = (double) ((fin - inicio));
 
                             System.out.println("La suma total es de " + sumaTotal);
-                            System.out.println("Han tardado un total de " + tiempo + " de milisegundos.");
+                            System.out.println("Han tardado un total de " + tiempo + " de milisegundos.\n");
 
                         } catch (InterruptedException e) {
                             System.out.println("Demasiadas conexiones simultaneas.");

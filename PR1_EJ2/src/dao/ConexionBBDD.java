@@ -12,21 +12,20 @@ public class ConexionBBDD {
             connection = DriverManager.getConnection("jdbc:mysql://localhost/BBDD_PSP_1", "DAM2020_PSP", "DAM2020_PSP");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Ha ocurrido un probelma, no se ha podido conectar a la base de datos.");
         }
         return connection;
     }
 
     //Método que devuelve el numero total de registros que se encuentran en ese momento en la base de datos.
     public int recogerNumeroTotalDeIngresos() {
-        int ingreso, contador = 0;
+        int contador = 0;
 
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost/BBDD_PSP_1", "DAM2020_PSP", "DAM2020_PSP");
             Statement statement= connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT INGRESOS FROM `EMPLEADOS`");
             while(resultSet.next()) {
-                ingreso = resultSet.getInt("INGRESOS");
                 contador++;
             }
         } catch (SQLException e) {
